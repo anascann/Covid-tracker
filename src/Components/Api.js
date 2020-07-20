@@ -31,7 +31,7 @@ import Cards from "../Layout/Cards"
      const countries=async()=>{
         try {
             const {data:{ countries }}=await Axios.get(`https://covid.mathdro.id/api/countries`)
-            console.log(countries);
+            
             return countries.map((country)=>country.name);
         } catch (error) {
             console.log(error);

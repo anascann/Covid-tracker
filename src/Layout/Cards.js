@@ -1,7 +1,7 @@
 import React,{useContext,useState,useEffect} from 'react'
 import { Container,Row,Col } from 'reactstrap'
 import {Card} from "react-bootstrap"
-import { Doughnut, Bar } from 'react-chartjs-2';
+import { Doughnut, Bar ,Line} from 'react-chartjs-2';
 import {GlobalState} from "../Context/UserContext";
 import CountUp from 'react-countup';
 import Axios from "axios"
@@ -16,6 +16,7 @@ export default function Cards({countries}) {
    const [cases,setCase]=useState(info)
    
    
+
    const {lastUpdate}=info;
    
 
@@ -36,12 +37,22 @@ export default function Cards({countries}) {
         setCase(info);
         console.log('global')
       }else{
-                let changebleURL=`https://covid.mathdro.id/api/countries/${country}`;
+                var changebleURL=`https://covid.mathdro.id/api/countries/${country}`;
   
             const res= await Axios.get(changebleURL);
             const data=res.data; 
             console.log(data)
             setCase(data);
+
+           var Confirmed=(cases.confirmed || 0);
+            var TotalCases=(Confirmed.value || 0);
+           
+           
+            var Deaths=(cases.deaths || 0);
+            var totalDeaths=(Deaths.value || 0);
+           
+            var recovered=(cases.recovered || 0);
+            var Recovered=(recovered.value || 0);
 
          
 
@@ -65,16 +76,20 @@ export default function Cards({countries}) {
    var recovered=(cases.recovered || 0);
    var Recovered=(recovered.value || 0);
 
+   
+
     return (
         <div>
-        <Container>
+        <Container fluid>
         <Row>
-        <Col xs={8}>
+        <Col md="auto">
         <FormControl className='formcontrol' >
         <NativeSelect defaultValue="" onClick={(e)=>{  
-            if(e.target.value.length >4){ handleCountryChange(e.target.value)  }
+            if(e.target.value.length >4){ handleCountryChange(e.target.value)  }else{
+              setCase(info)
+            }
               }} >
-        <option value='global' >World-Wide-cases</option>
+        <option value='global'>World-Wide-cases</option>
         {fetched.map((country,i)=>
             <option key={i} value={country} >{country}</option>
             )}
@@ -83,11 +98,9 @@ export default function Cards({countries}) {
         </Col>
         </Row>
         <Row>
-        <h1 className="align-center">Showing Cases of </h1>
+        <h1 className="align-center">Showing Cases of {}</h1>
         </Row>
-        
-        
-        
+
         <Row>
         <Col md="auto">
         <Card style={{ width: '18rem' }}>
@@ -162,6 +175,14 @@ export default function Cards({countries}) {
           title:{display:true,text:`WorldWide data `}
       }}
         /></Col>
+        </Row>
+
+        {' '}
+        <Row>
+        <Col>
+        
+        </Col>
+      
         </Row>
       </Container>
         </div>
